@@ -1,0 +1,31 @@
+{
+    "name": "forumtaro/theme",
+    "description": "ForumTaro custom theme for Flarum",
+    "type": "flarum-extension",
+    "license": "MIT",
+    "require": {
+        "flarum/core": "^1.8.0"
+    },
+    "authors": [
+        {
+            "name": "forumtaro",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ForumTaro\\Theme\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "ForumTaro Theme",
+            "category": "theme",
+            "icon": {
+                "name": "fas fa-paint-brush",
+                "backgroundColor": "#5544EE",
+                "color": "#fff"
+            }
+        }
+    }
+}
