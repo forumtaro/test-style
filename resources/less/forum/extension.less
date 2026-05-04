@@ -1,0 +1,606 @@
+// ForumTaro Theme Styles
+// ==========================
+
+// Змінні теми
+@font-face {
+    font-family: "RalewayRegular";
+    src: url("/assets/extensions/forumtaro-theme/fonts/e-UkraineHead-Thin.otf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+// ===== Основа =====
+body {
+    background-image: url("/assets/extensions/forumtaro-theme/images/28.WebP");
+    background-attachment: fixed;
+}
+
+.App-content {
+    background: transparent;
+}
+
+.App-navigation {
+    background-image: url("https://mytaro.com.ua/logo.pngs");
+    height: 49px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.Header-logo {
+    max-height: 66px;
+    vertical-align: middle;
+}
+
+// ===== Типографіка =====
+.DiscussionListItem-title,
+.Post-body {
+    font-family: Georgia, serif;
+    font-size: 16px;
+}
+
+.UserBio-content {
+    font-size: 16px;
+    text-shadow: #000 1px 0 10px;
+}
+
+.Button--link {
+    font-size: 16px;
+}
+
+// ===== Картки обговорень та пости =====
+.DiscussionListItem {
+    margin: 4px;
+    background-color: var(--body-bg);
+    border-radius: 10px;
+
+    &-content {
+        border-radius: 19px;
+    }
+
+    &-main {
+        padding-left: 6px;
+    }
+
+    &-author .Avatar {
+        --size: 55px;
+        margin-top: -4px;
+    }
+
+    &-info > li {
+        background: var(--body-bg);
+    }
+}
+
+.Post-body {
+    background-color: var(--body-bg);
+    padding: 10px;
+    margin-top: -15px;
+    border-radius: 0 0 10px 10px;
+
+    blockquote {
+        background: url("https://my.tarot.pp.ua/public/q.png") no-repeat top left;
+
+        p:last-child,
+        ul:last-child,
+        ol:last-child {
+            margin-left: 8px;
+            margin-right: -22px;
+            padding: 6px;
+            background: var(--control-bg);
+            border-left: 3px double #6c7d93;
+            border-radius: 4px;
+        }
+    }
+
+    img.FoFUpload--Upl-Image-Preview {
+        display: block;
+        margin: 1em auto;
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+}
+
+.Post-header {
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    background-color: var(--body-bg);
+
+    a {
+        padding: 10px;
+        border-radius: 10px 10px 0 0;
+        background-color: var(--body-bg);
+    }
+}
+
+.Post-footer {
+    display: inline-block;
+    height: 0;
+    margin: 0;
+}
+
+.no-touch .Post-actions {
+    opacity: .5;
+}
+
+.ReplyPlaceholder {
+    background-color: var(--body-bg);
+    border-radius: 10px;
+}
+
+.PostStream-item:not(:last-child) {
+    border-bottom: 0 !important;
+}
+
+.PostStream-timeGap {
+    padding: 0;
+}
+
+.Hero {
+    border-radius: 22px;
+    margin: 11px;
+}
+
+// ===== Кнопки та іконки =====
+.Button {
+    border-radius: 19px;
+}
+
+.item-like {
+    .Button-label {
+        display: none;
+    }
+    .Button:before {
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 600;
+        font-size: 17px;
+        content: '\f004';
+        margin-right: 4px;
+        vertical-align: -1px;
+    }
+}
+
+.item-reply .Button--link {
+    &:before {
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 600;
+        font-size: 17px;
+        content: '\f3e5';
+        margin-right: 4px;
+        vertical-align: -1px;
+    }
+    .Button-label {
+        display: none;
+    }
+}
+
+// ===== Навігація =====
+.DiscussionPage-nav {
+    margin-left: -20px;
+    margin-top: 10px;
+    background-color: var(--body-bg);
+    border-radius: 10px;
+    padding: 10px;
+
+    > ul > li.item-controls,
+    > ul > li.item-scrubber {
+        background: transparent;
+        color: #ccc;
+    }
+}
+
+.sideNav > ul {
+    background-color: var(--button-toggled-color);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.Scrubber {
+    margin: 30px;
+}
+
+.open.Dropdown .Dropdown-menu {
+    overflow-x: hidden;
+}
+
+// ===== Користувачі та бейджі =====
+.UserCard-avatar {
+    .Avatar { --size: 99px !important; }
+    width: 99px !important;
+    height: 99px !important;
+}
+
+.darkenBackground {
+    border-radius: 17px;
+}
+
+.UserHero,
+.CoverEditor-cover,
+body.dark .UserPage .Hero,
+.UserCard {
+    background-position: top !important;
+}
+
+.Badge--social {
+    width: 52px;
+    height: 52px;
+    font-size: 52px;
+}
+
+.item-fofsocialprofile {
+    display: block !important;
+    text-align: center !important;
+    margin: 10px auto !important;
+
+    i, .icon {
+        font-size: 24px !important;
+        margin: 10px !important;
+    }
+}
+
+.PostUser-badges .Badge,
+.DiscussionListItem-badges .Badge {
+    margin-left: -5px;
+}
+
+// ===== Таблиці =====
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    thead tr {
+        background-color: #f2f2f2;
+    }
+}
+
+// ===== Підписи =====
+.SignatureWrapper {
+    border-top: 1px dashed blue;
+}
+
+.Signature-content {
+    text-align: right;
+    margin-top: -10px;
+    padding: 0.1px;
+    background: var(--body-bg-shaded);
+    border-radius: 0 0 10px 10px;
+}
+
+// ===== Повідомлення =====
+.ConversationsList {
+    width: 98% !important;
+
+    .chat {
+        .chat-header .chat-num-messages {
+            display: none;
+        }
+
+        .chat-history {
+            margin-bottom: 30px;
+
+            .my-message .message-text {
+                border-radius: 20px 20px 0 20px !important;
+                box-shadow: 0 0.1px 4px rgba(30, 144, 255, 0.5), 0 0 2px rgba(30, 144, 255, 0.3);
+            }
+
+            .other-message .message-text {
+                border-radius: 0 20px 20px 20px !important;
+                color: @text-color !important;
+                background: @hero-bg !important;
+                box-shadow: 0 0.1px 4px rgba(30, 144, 255, 0.5), 0 0 2px rgba(30, 144, 255, 0.3);
+            }
+        }
+
+        .chat-message {
+            button {
+                position: fixed;
+                bottom: 5px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 70%;
+                z-index: 1000;
+            }
+            textarea {
+                position: relative;
+                bottom: 34px;
+            }
+        }
+    }
+}
+
+.message {
+    max-width: 80% !important;
+}
+
+// ===== Форми =====
+.FormControl {
+    background-color: var(--body-bg-shaded);
+}
+
+.Search-input {
+    border: 0.1px solid var(--header-color);
+    border-radius: 19px;
+}
+
+.TextEditor-controls {
+    border-top: 1px solid var(--control-bg);
+    padding-bottom: 4px;
+
+    .Button--icon {
+        display: none !important;
+    }
+}
+
+.emojionearea .emojionearea-button.active + .emojionearea-picker-position-top {
+    margin-left: 240px;
+}
+
+// ===== Спеціальні зображення =====
+img[width="1"] {
+    float: right;
+    width: 63px;
+    height: 108px;
+    margin-left: 1px;
+}
+
+img[width="0"] {
+    float: left;
+    width: 63px;
+    height: 108px;
+    margin-right: 6px;
+}
+
+// ===== Приховані елементи =====
+.item-tag11, .item-tag12, .item-tag13, .item-tag14, .item-tag15, .item-tag30,
+.item-moreTags,
+.item-birthdays,
+.item-preview,
+.TagCategory .TagCategory-content .TagCategory-main .TagCategory-description {
+    display: none !important;
+}
+
+.item-tags {
+    -webkit-mask-image: none !important;
+}
+
+.AlertManager {
+    display: none;
+}
+
+// ===== Кнопки Header =====
+.Header-primary .LinksButton {
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+
+    .Button-icon {
+        margin-right: 2px;
+    }
+}
+
+.custom-nav-link {
+    color: white !important;
+}
+
+// ===== Мобільні стилі =====
+@media (max-width: 767px) {
+    .Header-logo { width: 55px; }
+    .App-titleControl > .Button { font-size: 25px; }
+    .Header-title, .App-titleControl--text, .header-secondary { display: none; }
+    .item-tags { display: none; }
+
+    .Post-body {
+        margin-left: 30px;
+        padding: 8px;
+        margin-top: -28px;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .Post-header {
+        padding: 0;
+        border-radius: 50px 30px 0 50px;
+
+        a {
+            padding: 0;
+            border-radius: 50px 30px 0 50px;
+        }
+
+        .Avatar {
+            --size: 40px;
+            z-index: 1;
+        }
+    }
+
+    .Post {
+        margin-left: -30px;
+    }
+
+    .DiscussionListItem {
+        margin: 2px 11px;
+
+        &-content {
+            padding-bottom: 8px;
+            padding-left: 53px !important;
+            border-radius: 19px;
+        }
+
+        &-badges {
+            float: right;
+            margin-top: 12px;
+            right: -8px;
+        }
+
+        &-title {
+            margin-right: 40px;
+        }
+    }
+
+    .PostUser-badges {
+        position: static;
+        margin-left: 15px;
+        width: auto !important;
+    }
+
+    .Signature-content {
+        margin-left: 30px;
+        margin-top: -10px;
+        padding: 0.1px;
+        background: var(--body-bg-shaded);
+        border-radius: 0 0 10px 10px;
+    }
+
+    #App-titleControl, .App-titleControl > .Button {
+        position: fixed;
+        bottom: 0;
+        right: 1px;
+        font-size: 18px;
+    }
+
+    .sideNav > ul {
+        background-color: transparent !important;
+        bottom: 6px;
+        right: 50%;
+        z-index: 9;
+    }
+
+    .item-discussion-views {
+        position: absolute;
+        right: 4px;
+        top: 40px;
+        margin-right: 0 !important;
+    }
+
+    .item-bookmark .Button-label { display: none; }
+    .PostStream { margin-top: -40px !important; }
+
+    .DiscussionPage-nav {
+        background-color: transparent;
+        border-bottom: transparent;
+    }
+
+    #content { margin-top: 34px !important; }
+
+    .PostStreamScrubber .Dropdown-menu {
+        padding: 0 11px !important;
+    }
+
+    .item-subscription {
+        display: flex !important;
+        justify-content: right !important;
+        margin-top: -16px !important;
+    }
+
+    .LinksButton .Button-icon { margin-right: 12px; }
+
+    .Composer.minimized {
+        margin-right: 4px;
+        margin-left: 55px;
+        bottom: 41px !important;
+        border-radius: 22px 22px 0 0;
+        font-size: 18px;
+        box-shadow: 0 -1px 0 0 #5544EE, -1px 0 0 0 #5544EE, 1px 0 0 0 #5544EE;
+
+        .ComposerBody-content {
+            height: 40px;
+            margin-top: -10px;
+            border-bottom: 1px dotted var(--badge-bg);
+            padding-bottom: 44px;
+        }
+    }
+
+    .fa-minus.minimize::before {
+        content: "\f06e";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+    }
+
+    .UserCard--popover { display: none; }
+
+    .IndexPage-nav .item-newDiscussion .Button {
+        background: var(--hero-bg) !important;
+        position: fixed;
+        bottom: 60px;
+        right: 6px;
+        border-radius: 50% !important;
+        width: 60px;
+        height: 60px;
+        z-index: 999;
+        color: var(--hero-bg);
+        border: solid 1px !important;
+    }
+}
+
+// ===== Планшети =====
+@media (min-width: 768px) and (max-width: 991px) {
+    .sideNavWrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .sideNavOffset { width: 75%; }
+
+    .sideNav {
+        width: 22%;
+        position: absolute;
+        right: 20px;
+        top: 8px;
+        overflow: visible;
+
+        > ul {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+
+            > li {
+                display: block;
+                margin-bottom: 10px;
+            }
+        }
+    }
+
+    .AfruxWidgets-sideNavAlt { max-width: 75%; }
+    .container { width: 100%; }
+}
+
+// ===== Десктопи =====
+@media (min-width: 768px) {
+    .PostUser-badges {
+        float: none;
+        position: relative;
+        margin-left: 15px;
+        width: auto;
+    }
+
+    .DiscussionListItem-badges {
+        float: right;
+        margin-top: 12px;
+        right: 0;
+    }
+
+    .paneShowing {
+        .DiscussionListItem-badges { right: 0; }
+        .DiscussionListItem-title { margin-right: 40px; }
+    }
+
+    .DiscussionListItem-info .item-tags,
+    .UserPage .DiscussionListItem-info .item-tags {
+        position: static !important;
+    }
+
+    .PostUser-avatar { left: -80px; }
+
+    .DiscussionPage-discussion > .container {
+        display: grid;
+        grid-gap: 25px;
+        grid-template-columns: 1fr 150px;
+        grid-template-areas: 'stream nav';
+    }
+}
