@@ -15,6 +15,5 @@ return [
     (new Extend\Frontend('admin'))
         ->css(__DIR__ . '/resources/less/admin.less'),
     
-    // Реєстрація асетів
-    new Extend\Locales(__DIR__ . '/resources/locale'),
+   
 ];
