@@ -465,6 +465,7 @@ img[width="0"] {
      
 
     .sideNav > ul {
+        margin-top: -40px;
         background-color: transparent !important;
         bottom: 6px;
         right: 50%;
@@ -479,7 +480,7 @@ img[width="0"] {
     }
 
     .item-bookmark .Button-label { display: none; }
-    .PostStream { margin-top: -40px !important; }
+    .PostStream { margin-top: -20px !important; }
 
     .DiscussionPage-nav {
         width: 188px;
@@ -555,7 +556,7 @@ img[width="0"] {
         width: 22%;
         position: absolute;
         right: 20px;
-        top: 8px;
+        
         overflow: visible;
 
         > ul {
@@ -665,9 +666,6 @@ blockquote.collapsible.expanded::after {
     color: white;
 }
 
-
-
-
 body:not(.DiscussionPage) .Button.Dropdown-toggle[aria-label="Toggle navigation dropdown menu"] {display:none!important}
 .mobile-nav {display:none}
 
@@ -711,3 +709,133 @@ body:not(.DiscussionPage) .Button.Dropdown-toggle[aria-label="Toggle navigation 
     font-size:22px;text-decoration:none;
 }
 
+/* ПОЧАТОК Вигляд бокової панелі на планшеті */
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .sideNavWrapper {
+    display: inline;
+    justify-content: space-between; /* Вирівнюємо .sideNavOffset і .sideNav по боках */
+    align-items: flex-start; /* Вирівнюємо елементи по верху */
+  }
+
+  .sideNavOffset {
+    width: 75%;
+  }
+
+  .sideNav {
+    display: inherit;
+    width: 22%;
+    position: absolute; /* Абсолютне позиціонування для розташування по правому краю і зверху */
+    right: 20px; /* Вирівнювання по правому краю */
+    top: 8; /* Розташування вгорі */
+    white-space: normal; /* Текст переноситься у нові рядки */
+    overflow: visible; /* Запобігання обрізанню вмісту */
+  }
+
+  .sideNav>ul {
+    width: 100%;
+   display: flex;
+    flex-direction: column; /* Вирівнює елементи вертикально */
+ }
+
+  .sideNav>ul>li {
+    display: block;
+    margin-bottom: 10px; /* Відступ між пунктами меню */
+  }
+
+.AfruxWidgets-sideNavAlt {
+max-width: 75%;
+}
+}
+
+/* КІНЦЬ Вигляд бокової панелі на планшеті */
+
+@media (max-width: 767.98px) {
+    .IndexPage-nav .item-newDiscussion .Button {
+        background: var(--hero-bg) !important;
+        position: fixed;
+        bottom: 60px;
+        right: 6px;
+        border-radius: 50% !important;
+        width: 60px;
+        height: 60px;
+        z-index: 999;
+        color: var(--hero-bg);
+        border: solid 1px !important;
+    }
+}
+@media (max-width: 767.98px) {
+    .App-primaryControl>.Button, .App-backControl>.Button {
+        color: var(--header-control-color) !important;
+    }
+
+.ComposerBody-editor .TextEditor-controls .item-submit {
+    border-radius: 100px;
+    background: var(--avatar-bg);
+    top: 296px !important;
+    position: absolute !important;
+    border: solid 1px var(--control-color) !important;
+    right: 3px;
+}
+
+.TextEditor-controls {
+   
+    margin-right: 36px;
+    padding: 10px 0;
+    list-style-type: none;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.Composer:not(.minimized) .Composer-controls .App-backControl {
+    right: 1px;
+    position: absolute !important;
+}
+
+
+/* Для скраббера (навігації по датах) */
+.App-titleControl>.Button {
+    font-size: 18px !important;
+}
+
+.Button-label .username {display:none!important}
+
+.IndexPage-nav .sideNav{display:none!important}
+}
+
+
+.item-bookmark {
+right: 1px;
+width: 40px;
+}
+
+
+.ConversationsList button.Button--primary {
+    position: fixed;
+    bottom: 45px !important;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    z-index: 1000;
+}
+
+.ConversationsList .chat .chat-message textarea {
+    position: fixed !important;
+    bottom: 34px;
+}
+
+.PostStream-timeGap {
+    top: 8px;
+    margin-left: 8px;
+    position: relative;
+    padding: 0;
+}
+
+
+/* Додайте на початку або до цих селекторів: */
+@media (min-width: 768px) {
+    .mobile-profile-container,
+    .login-mobile-btn {
+        display: none !important;
+    }
+}
