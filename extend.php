@@ -16,7 +16,7 @@ return [
                 <i class="fas fa-sign-in-alt"></i>
             </button>
             <div class="mobile-nav" id="mn">
-                <a href="/tags" data-route="/tags"><i class="fas fa-th-list"></i><span>Категорії</span></a>
+                <a href="/categories" data-route="/categories"><i class="fas fa-th-list"></i><span>Категорії</span></a>
                 <a href="#" id="nav-private"><i class="fas fa-fire"></i><span id="nav-private-text">Популярне</span></a>
                 <a href="/all" data-route="/all"><i class="fas fa-comments"></i><span>Сторінки</span></a>
                 <a href="#" id="nav-bookmarks"><i class="fas fa-book-open"></i><span id="nav-bookmarks-text">Значення</span></a>
@@ -74,12 +74,26 @@ return [
         if(typeof app==="undefined") return;
         var u=app.session&&app.session.user;
         if(u){
-            var s=document.querySelector(".App-header .item-session");
-            if(s&&mpc&&!mpc.hasChildNodes()){
-                mpc.appendChild(s.cloneNode(true));
+           var s=document.querySelector(".App-header .item-session .Dropdown");
+if(s&&mpc&&!mpc.hasChildNodes()){
+    mpc.appendChild(s.cloneNode(true));
                 mpc.style.display="block";
                 if(loginBtn) loginBtn.style.display="none";
-                mpc.querySelectorAll("a").forEach(function(l){ if(l.href) l.dataset.route=l.getAttribute("href"); });
+                mpc.querySelectorAll("a").forEach(function(l){
+    if(l.href){
+        l.dataset.route=l.getAttribute("href");
+        if(l.target==="_blank"||l.href.indexOf(window.location.origin)===-1){
+            l.onclick=function(e){ e.preventDefault(); window.open(l.href,"_blank"); };
+        }
+    }
+});
+var logoutBtn=mpc.querySelector(".item-logOut button");
+if(logoutBtn){
+    logoutBtn.onclick=function(){
+        var origBtn=document.querySelector(".App-header .item-logOut button");
+        if(origBtn) origBtn.click();
+    };
+}
             }
         } else {
             if(mpc) mpc.style.display="none";
@@ -123,88 +137,167 @@ return [
     }
 
     function initLogo(){
-        if(window.innerWidth>768) return;
-        function createLogoEl(){
-            if($("custom-logo-container")) return;
-            var c=document.createElement("div"); c.id="custom-logo-container";
-            c.style.cssText="position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:1001;transition:opacity 0.3s,transform 0.3s;";
-            var a=document.createElement("a"); a.href="/all";
-            var img=document.createElement("img"); img.src="https://mytaro.com.ua/logo.WebP"; img.alt="Логотип"; img.style.cssText="max-width:170px;height:auto;display:block;";
-            a.appendChild(img); c.appendChild(a); document.body.appendChild(c);
-        }
-        function handleScroll(){
-            var logo=$("custom-logo-container");
-            var scrubber=document.querySelector(".App-titleControl")||document.querySelector(".PostStreamScrubber");
-            var isDisc=document.querySelector(".DiscussionPage");
-            if(!isDisc){
-                if(logo){logo.style.opacity="1";logo.style.transform="translateX(-50%) translateY(0)";}
-                if(scrubber){scrubber.style.opacity="0";scrubber.style.pointerEvents="none";}
-                return;
-            }
-            var st=window.pageYOffset, hero=document.querySelector(".DiscussionHero"), hh=hero?hero.offsetHeight:200;
-            if(st<hh){
-                if(logo){logo.style.opacity="1";logo.style.transform="translateX(-50%) translateY(0)";}
-                if(scrubber){scrubber.style.opacity="0";scrubber.style.pointerEvents="none";scrubber.style.transition="opacity 0.3s";}
-            } else {
-                if(logo){logo.style.opacity="0";logo.style.transform="translateX(-50%) translateY(-100%)";}
-                if(scrubber){scrubber.style.opacity="1";scrubber.style.pointerEvents="auto";scrubber.style.transition="opacity 0.3s";}
-            }
-        }
-        createLogoEl();
-        window.addEventListener("scroll",handleScroll,{passive:true});
-        handleScroll();
-        observe(document.body,debounce(handleScroll,200),0,{childList:true,subtree:true});
-        window.addEventListener("resize",function(){ if(window.innerWidth>768){var l=$("custom-logo-container");if(l)l.remove();}else createLogoEl(); });
+    var logoScrollHandler = null;
+    var bodyObserver = null;
+    var isActive = false;
+    
+    function createLogoEl(){
+        if($("custom-logo-container")) return;
+        var c=document.createElement("div"); c.id="custom-logo-container";
+        c.style.cssText="position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:1001;transition:opacity 0.3s,transform 0.3s;";
+        var a=document.createElement("a"); a.href="/all";
+        var img=document.createElement("img"); img.src="https://mytaro.com.ua/logo.WebP"; img.alt="Логотип"; img.style.cssText="max-width:170px;height:auto;display:block;";
+        a.appendChild(img); c.appendChild(a); document.body.appendChild(c);
     }
+    
+    function handleScroll(){
+        var logo=$("custom-logo-container");
+        var scrubber=document.querySelector(".App-titleControl")||document.querySelector(".PostStreamScrubber");
+        var isDisc=document.querySelector(".DiscussionPage");
+        if(!isDisc){
+            if(logo){logo.style.opacity="1";logo.style.transform="translateX(-50%) translateY(0)";}
+            if(scrubber){scrubber.style.opacity="0";scrubber.style.pointerEvents="none";}
+            return;
+        }
+        var st=window.pageYOffset, hero=document.querySelector(".DiscussionHero"), hh=hero?hero.offsetHeight:200;
+        if(st<hh){
+            if(logo){logo.style.opacity="1";logo.style.transform="translateX(-50%) translateY(0)";}
+            if(scrubber){scrubber.style.opacity="0";scrubber.style.pointerEvents="none";scrubber.style.transition="opacity 0.3s";}
+        } else {
+            if(logo){logo.style.opacity="0";logo.style.transform="translateX(-50%) translateY(-100%)";}
+            if(scrubber){scrubber.style.opacity="1";scrubber.style.pointerEvents="auto";scrubber.style.transition="opacity 0.3s";}
+        }
+    }
+    
+    function activateLogo(){
+        if(isActive) return;
+        isActive = true;
+        
+        createLogoEl();
+        
+        // Створюємо і зберігаємо обробник
+        logoScrollHandler = handleScroll;
+        window.addEventListener("scroll", logoScrollHandler, {passive:true});
+        logoScrollHandler(); // Викликаємо одразу
+        
+        // Запускаємо спостерігач
+        bodyObserver = new MutationObserver(debounce(handleScroll, 200));
+        bodyObserver.observe(document.body, {childList:true, subtree:true});
+    }
+    
+    function deactivateLogo(){
+        if(!isActive) return;
+        isActive = false;
+        
+        // Видаляємо елемент
+        var logo = $("custom-logo-container");
+        if(logo) logo.remove();
+        
+        // Видаляємо обробник скролу
+        if(logoScrollHandler) {
+            window.removeEventListener("scroll", logoScrollHandler, {passive:true});
+            logoScrollHandler = null;
+        }
+        
+        // Відключаємо спостерігач
+        if(bodyObserver) {
+            bodyObserver.disconnect();
+            bodyObserver = null;
+        }
+        
+        // Відновлюємо скрубер якщо потрібно
+        var scrubber = document.querySelector(".App-titleControl") || document.querySelector(".PostStreamScrubber");
+        if(scrubber) {
+            scrubber.style.opacity = "";
+            scrubber.style.pointerEvents = "";
+        }
+    }
+    
+    function handleResize(){
+        if(window.innerWidth > 768) {
+            deactivateLogo();
+        } else {
+            activateLogo();
+        }
+    }
+    
+    // Початкова ініціалізація
+    if(window.innerWidth <= 768) {
+        activateLogo();
+    }
+    
+    // Додаємо обробник зміни розміру
+    window.addEventListener("resize", debounce(handleResize, 100));
+}
+
 
     function initSwipe(){
-        var startY=0,currentY=0,isDragging=false,canClose=false;
-        var xStart=null,yStart=null,xDiff=0,isSwiping=false,hasReached=false;
-        var SR=200,SL=-140,SI=90;
-        function setupDD(){
-            document.querySelectorAll(".Dropdown-menu").forEach(function(dd){
-                if(dd.dataset.swipeInit) return;
-                dd.dataset.swipeInit="1";
-                if(!dd.querySelector(".swipe-indicator")){var ind=document.createElement("div");ind.className="swipe-indicator";dd.insertBefore(ind,dd.firstChild);}
-                dd.style.borderRadius="23px 23px 0 0";
-                dd.addEventListener("touchstart",function(e){startY=currentY=e.touches[0].clientY;isDragging=true;canClose=dd.scrollTop===0;if(canClose)dd.style.transition="none";},{passive:false});
-                dd.addEventListener("touchmove",function(e){
-                    if(e.target.closest(".Scrubber-scrollbar,.mobile-nav-menu")) return;
-                    var d=e.touches[0].clientY-startY;
-                    if(d>0&&canClose){e.preventDefault();currentY=startY+d;var p=Math.min(d/150,1),r=Math.max(8,16-p*8);dd.style.transform="translateY("+d+"px)";dd.style.opacity=Math.max(0.3,1-p);dd.style.borderRadius=r+"px "+r+"px 0 0";}
-                },{passive:false});
-                dd.addEventListener("touchend",function(){
-                    if(!isDragging) return;
-                    var d=currentY-startY;
-                    if(d>80&&canClose){
-                        dd.style.transform="translateY(100vh)";dd.style.opacity="0";dd.style.transition="all 0.3s cubic-bezier(0.4,0,0.2,1)";
-                        setTimeout(function(){document.body.dispatchEvent(new MouseEvent("click",{bubbles:true}));setTimeout(function(){dd.style.transform="";dd.style.opacity="";dd.style.transition="";dd.style.borderRadius="16px 16px 0 0";},50);},300);
-                    } else {dd.style.transform="";dd.style.opacity="";dd.style.borderRadius="16px 16px 0 0";dd.style.transition="all 0.2s ease";setTimeout(function(){dd.style.transition="";},200);}
-                    isDragging=false;
-                },{passive:true});
-            });
-        }
-        document.addEventListener("touchstart",function(e){ if(e.target.closest(".Dropdown-toggle,.navigation,.modal,.Dropdown-menu,button,textarea,input")) return; xStart=e.touches[0].clientX;yStart=e.touches[0].clientY;isSwiping=true;hasReached=false; },{passive:true});
-        document.addEventListener("touchmove",function(e){
-            if(!xStart||!isSwiping) return;
-            xDiff=e.touches[0].clientX-xStart;var yDiff=e.touches[0].clientY-yStart;
-            if(Math.abs(xDiff)<Math.abs(yDiff)||Math.abs(xDiff)<SI) return;
-            var cc=document.querySelectorAll(".App-content");
-            if(xDiff>0){cc.forEach(function(c){c.style.transform="translateX("+xDiff+"px)";c.style.opacity=1-Math.abs(xDiff)/(2*SR);});if(xDiff>SR){hasReached=true;cc.forEach(function(c){c.classList.add("permanently-swiped");});}}
-            else if(xDiff<0&&window.location.pathname==="/"){cc.forEach(function(c){c.style.transform="translateX("+xDiff+"px) rotateY("+xDiff/10+"deg)";c.style.opacity=1-Math.abs(xDiff)/500;});if(Math.abs(xDiff)>Math.abs(SL)){hasReached=true;cc.forEach(function(c){c.classList.add("permanently-swiped");});}}
-        },{passive:true});
-        document.addEventListener("touchend",function(){
-            if(!isSwiping) return;
-            var cc=document.querySelectorAll(".App-content");
-            if(hasReached){
-                if(xDiff>0){var bl=document.querySelector(".Button-label");if(bl)bl.click();setTimeout(function(){cc.forEach(function(c){c.classList.remove("swiped","permanently-swiped");c.style.transform="";c.style.opacity="";});},300);}
-                else if(xDiff<0&&window.location.pathname==="/"){cc.forEach(function(c){c.style.transition="transform 0.4s,opacity 0.4s";c.style.transform="translateX(-100%) rotateY(-15deg)";c.style.opacity="0";});if(typeof m!=="undefined"&&m.route)m.route.set("/all");}
-            } else {cc.forEach(function(c){c.style.transition="transform 0.3s,opacity 0.3s";c.style.transform="";c.style.opacity="";}); }
-            isSwiping=false;xStart=yStart=null;
-        },{passive:true});
-        observe(document.body,setupDD,150);
-        setupDD();
+    var startY=0,currentY=0,isDragging=false,canClose=false;
+    var xStart=null,yStart=null,xDiff=0,isSwiping=false,hasReached=false;
+    var SR=200,SL=-140,SI=90;
+    
+    function setupDD(){
+        document.querySelectorAll(".Dropdown-menu").forEach(function(dd){
+            if(dd.dataset.swipeInit) return;
+            dd.dataset.swipeInit="1";
+            if(!dd.querySelector(".swipe-indicator")){var ind=document.createElement("div");ind.className="swipe-indicator";dd.insertBefore(ind,dd.firstChild);}
+            dd.style.borderRadius="23px 23px 0 0";
+            dd.addEventListener("touchstart",function(e){startY=currentY=e.touches[0].clientY;isDragging=true;canClose=dd.scrollTop===0;if(canClose)dd.style.transition="none";},{passive:false});
+            dd.addEventListener("touchmove",function(e){
+                if(e.target.closest(".Scrubber-scrollbar,.mobile-nav-menu")) return;
+                var d=e.touches[0].clientY-startY;
+                if(d>0&&canClose){e.preventDefault();currentY=startY+d;var p=Math.min(d/150,1),r=Math.max(8,16-p*8);dd.style.transform="translateY("+d+"px)";dd.style.opacity=Math.max(0.3,1-p);dd.style.borderRadius=r+"px "+r+"px 0 0";}
+            },{passive:false});
+            dd.addEventListener("touchend",function(){
+                if(!isDragging) return;
+                var d=currentY-startY;
+                if(d>80&&canClose){
+                    dd.style.transform="translateY(100vh)";dd.style.opacity="0";dd.style.transition="all 0.3s cubic-bezier(0.4,0,0.2,1)";
+                    setTimeout(function(){document.body.dispatchEvent(new MouseEvent("click",{bubbles:true}));setTimeout(function(){dd.style.transform="";dd.style.opacity="";dd.style.transition="";dd.style.borderRadius="16px 16px 0 0";},50);},300);
+                } else {dd.style.transform="";dd.style.opacity="";dd.style.borderRadius="16px 16px 0 0";dd.style.transition="all 0.2s ease";setTimeout(function(){dd.style.transition="";},200);}
+                isDragging=false;
+            },{passive:true});
+        });
     }
+    
+    document.addEventListener("touchstart",function(e){
+        // ОСЬ ЄДИНА ЗМІНА: перевіряємо чи це непрочитане повідомлення
+        if(e.target.closest(".DiscussionListItem .unread") || e.target.closest(".DiscussionListItem.unread")) return;
+        
+        if(e.target.closest(".Dropdown-toggle,.navigation,.modal,.Dropdown-menu,button,textarea,input")) return;
+        xStart=e.touches[0].clientX;yStart=e.touches[0].clientY;isSwiping=true;hasReached=false;
+    },{passive:true});
+    
+    document.addEventListener("touchmove",function(e){
+        if(!xStart||!isSwiping) return;
+        xDiff=e.touches[0].clientX-xStart;var yDiff=e.touches[0].clientY-yStart;
+        if(Math.abs(xDiff)<Math.abs(yDiff)||Math.abs(xDiff)<SI) return;
+        var cc=document.querySelectorAll(".App-content");
+        if(xDiff>0){cc.forEach(function(c){c.style.transform="translateX("+xDiff+"px)";c.style.opacity=1-Math.abs(xDiff)/(2*SR);});if(xDiff>SR){hasReached=true;cc.forEach(function(c){c.classList.add("permanently-swiped");});}}
+    },{passive:true});
+    
+    document.addEventListener("touchend",function(){
+        if(!isSwiping) return;
+        var cc=document.querySelectorAll(".App-content");
+        if(hasReached){
+            if(xDiff>0){var bl=document.querySelector(".Button-label");if(bl)bl.click();setTimeout(function(){cc.forEach(function(c){c.classList.remove("swiped","permanently-swiped");c.style.transform="";c.style.opacity="";});},300);}
+        } else {cc.forEach(function(c){c.style.transition="transform 0.3s,opacity 0.3s";c.style.transform="";c.style.opacity="";});}
+        isSwiping=false;xStart=yStart=null;
+    },{passive:true});
+    
+    document.addEventListener("touchend",function(){
+        if(!isSwiping) return;
+        var cc=document.querySelectorAll(".App-content");
+        if(hasReached){
+            if(xDiff>0){var bl=document.querySelector(".Button-label");if(bl)bl.click();setTimeout(function(){cc.forEach(function(c){c.classList.remove("swiped","permanently-swiped");c.style.transform="";c.style.opacity="";});},300);}
+            else if(xDiff<0&&window.location.pathname==="/"){cc.forEach(function(c){c.style.transition="transform 0.4s,opacity 0.4s";c.style.transform="translateX(-100%) rotateY(-15deg)";c.style.opacity="0";});if(typeof m!=="undefined"&&m.route)m.route.set("/all");}
+        } else {cc.forEach(function(c){c.style.transition="transform 0.3s,opacity 0.3s";c.style.transform="";c.style.opacity="";});}
+        isSwiping=false;xStart=yStart=null;
+    },{passive:true});
+    
+    observe(document.body,setupDD,150);
+    setupDD();
+}
 
     function expandUserNav(){
         if(window.innerWidth>767) return;
